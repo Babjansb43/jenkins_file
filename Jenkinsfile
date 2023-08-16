@@ -16,7 +16,8 @@ buildDiscarder(logRotator(numToKeepStr:'8'))
             steps {
                 script {
                     sh 'curl -O https://releases.hashicorp.com/terraform/0.15.0/terraform_0.15.0_linux_amd64.zip'
-                    sh 'unzip terraform_0.15.0_linux_amd64.zip'
+                    sh 'unzip -o terraform_0.15.0_linux_amd64.zip'
+                    sh 'chmod +x terraform'
                     sh 'mv terraform ~/terraform'
                     sh 'export PATH=$PATH:~/terraform'
                 }
