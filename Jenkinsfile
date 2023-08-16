@@ -14,11 +14,13 @@ pipeline{
     }
     options {
 // Only keep the 5 most recent builds
-buildDiscarder(logRotator(numToKeepStr:'5'))
+buildDiscarder(logRotator(numToKeepStr:'8'))
 }
     stages(){
         stage('Terraform Version Validation') {
             steps {
+                def tfHome = tool name: 'Terraform', type: 'org.jenkinsci.plugins.terraform.TerraformTool'
+                env.PATH = "${tfHome}:${env.PATH}"
                 sh 'terraform --version'  // Verify Terraform installation
             }
         }
@@ -29,13 +31,17 @@ buildDiscarder(logRotator(numToKeepStr:'5'))
         }
         stage("Terraform init"){
             steps{
-        sh 'terraform init -input=false'
+                def tfHome = tool name: 'Terraform', type: 'org.jenkinsci.plugins.terraform.TerraformTool'
+                env.PATH = "${tfHome}:${env.PATH}"
+                sh 'terraform init -input=false'
             }
         }
          stage("Terraform plan"){
             steps{
-        sh "terraform plan -input=false -var 'region=${params.region}' -out tfplan"
-        sh 'terraform show -no-color tfplan > tfplan.txt'
+                def tfHome = tool name: 'Terraform', type: 'org.jenkinsci.plugins.terraform.TerraformTool'
+                env.PATH = "${tfHome}:${env.PATH}"
+                sh "terraform plan -input=false -var 'region=${params.region}' -out tfplan"
+                sh 'terraform show -no-color tfplan > tfplan.txt'
             }
         }
         stage('Approval') {
@@ -59,6 +65,8 @@ buildDiscarder(logRotator(numToKeepStr:'5'))
                 }
             }
             steps {
+                def tfHome = tool name: 'Terraform', type: 'org.jenkinsci.plugins.terraform.TerraformTool'
+                env.PATH = "${tfHome}:${env.PATH}"
                 // Execute the 'terraform apply' command here
                 sh "terraform apply -input=false -var 'region=${params.region}' -auto-approve"
             }
