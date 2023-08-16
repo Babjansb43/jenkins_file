@@ -27,19 +27,19 @@ buildDiscarder(logRotator(numToKeepStr:'8'))
                 sh '/var/lib/jenkins/terraform --version'  // Verify Terraform installation
             }
         }
-        stage("Checkot"){
-            steps{
-        checkout scmGit(branches: [[name: '*/main']], extensions: [], userRemoteConfigs: [[url: 'https://github.com/Babjansb43/jenkins_file.git']])
-            }
-        }
+        // stage("Checkot"){
+        //     steps{
+        // checkout scmGit(branches: [[name: '*/main']], extensions: [], userRemoteConfigs: [[url: 'https://github.com/Babjansb43/jenkins_file.git']])
+        //     }
+        // }
         stage("Terraform init"){
             steps{
-                sh '/var/lib/jenkins/terraform init -input=false'
+                sh '/var/lib/jenkins/terraform init'
             }
         }
          stage("Terraform plan"){
             steps{
-                sh "/var/lib/jenkins/terraform plan -input=false -var 'region=${params.region}' -out tfplan"
+                sh "/var/lib/jenkins/terraform plan -var 'region=${params.region}' -out tfplan"
                 sh '/var/lib/jenkins/terraform show -no-color tfplan > tfplan.txt'
             }
         }
@@ -65,7 +65,7 @@ buildDiscarder(logRotator(numToKeepStr:'8'))
             }
             steps {
                 // Execute the 'terraform apply' command here
-                sh "/var/lib/jenkins/terraform apply -input=false -var 'region=${params.region}' -auto-approve"
+                sh "/var/lib/jenkins/terraform apply  -var 'region=${params.region}' -auto-approve"
             }
         }
     }
