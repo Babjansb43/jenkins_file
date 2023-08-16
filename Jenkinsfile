@@ -4,12 +4,6 @@ properties([parameters([choice(choices: ['us-east-1', 'us-east-2', 'us-west-1'],
 
 pipeline{
     agent any
-
-      tools {
-        terraform 'terraform-11'
-        git 'Default'
-      }
-
       parameters {
         booleanParam(name: 'autoApprove', defaultValue: false, description: 'Automatically run apply after generating plan?')
       }
@@ -18,6 +12,15 @@ pipeline{
 buildDiscarder(logRotator(numToKeepStr:'8'))
 }
     stages(){
+        stage('Install and Use Terraform') {
+            steps {
+                script {
+                    sh 'curl -O https://releases.hashicorp.com/terraform/0.15.0/terraform_0.15.0_linux_amd64.zip'
+                    sh 'unzip terraform_0.15.0_linux_amd64.zip'
+                    sh 'mv terraform /usr/local/bin/'
+                }
+            }
+        }
         stage('Terraform Version Validation') {
             steps {
                 sh 'terraform --version'  // Verify Terraform installation
