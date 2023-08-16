@@ -5,14 +5,14 @@ properties([parameters([choice(choices: ['us-east-1', 'us-east-2', 'us-west-1'],
 pipeline{
     agent any
 
-      environment {
-        TF_HOME = tool name: 'Terraform', type: 'org.jenkinsci.plugins.terraform.TerraformTool'
-        PATH = "${env.TF_HOME}:${env.PATH}"
-    }
+      tools {
+        terraform 'terraform-11'
+        git 'Default'
+      }
 
       parameters {
         booleanParam(name: 'autoApprove', defaultValue: false, description: 'Automatically run apply after generating plan?')
-    }
+      }
     options {
 // Only keep the 5 most recent builds
 buildDiscarder(logRotator(numToKeepStr:'8'))
