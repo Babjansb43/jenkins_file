@@ -19,13 +19,12 @@ buildDiscarder(logRotator(numToKeepStr:'8'))
                     sh 'unzip -o terraform_0.15.0_linux_amd64.zip'
                     sh 'chmod +x terraform'
                     sh 'mv terraform /var/lib/jenkins/terraform'
-                    sh 'export PATH=$PATH:/var/lib/jenkins/terraform'
                 }
             }
         }
         stage('Terraform Version Validation') {
             steps {
-                sh 'terraform --version'  // Verify Terraform installation
+                sh '/var/lib/jenkins/terraform --version'  // Verify Terraform installation
             }
         }
         stage("Checkot"){
@@ -35,13 +34,13 @@ buildDiscarder(logRotator(numToKeepStr:'8'))
         }
         stage("Terraform init"){
             steps{
-                sh 'terraform init -input=false'
+                sh '/var/lib/jenkins/terraform init -input=false'
             }
         }
          stage("Terraform plan"){
             steps{
-                sh "terraform plan -input=false -var 'region=${params.region}' -out tfplan"
-                sh 'terraform show -no-color tfplan > tfplan.txt'
+                sh "/var/lib/jenkins/terraform plan -input=false -var 'region=${params.region}' -out tfplan"
+                sh '/var/lib/jenkins/terraform show -no-color tfplan > tfplan.txt'
             }
         }
         stage('Approval') {
@@ -66,7 +65,7 @@ buildDiscarder(logRotator(numToKeepStr:'8'))
             }
             steps {
                 // Execute the 'terraform apply' command here
-                sh "terraform apply -input=false -var 'region=${params.region}' -auto-approve"
+                sh "/var/lib/jenkins/terraform apply -input=false -var 'region=${params.region}' -auto-approve"
             }
         }
     }
