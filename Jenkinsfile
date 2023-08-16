@@ -9,9 +9,6 @@ pipeline{
         terraform 'Terraform'
       }
 
-      environment {
-        TERRAFORM_HOME = tool name: 'Terraform', type: 'HashiCorp Terraform'
-    }
       parameters {
         booleanParam(name: 'autoApprove', defaultValue: false, description: 'Automatically run apply after generating plan?')
     }
