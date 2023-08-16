@@ -18,8 +18,8 @@ buildDiscarder(logRotator(numToKeepStr:'8'))
                     sh 'curl -O https://releases.hashicorp.com/terraform/0.15.0/terraform_0.15.0_linux_amd64.zip'
                     sh 'unzip -o terraform_0.15.0_linux_amd64.zip'
                     sh 'chmod +x terraform'
-                    sh 'mv terraform ~/terraform'
-                    sh 'export PATH=$PATH:~/terraform'
+                    sh 'mv terraform /var/lib/jenkins/terraform'
+                    sh 'export PATH=$PATH:/var/lib/jenkins/terraform'
                 }
             }
         }
