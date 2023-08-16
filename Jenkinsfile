@@ -33,7 +33,7 @@ buildDiscarder(logRotator(numToKeepStr:'5'))
         }
          stage("Terraform plan"){
             steps{
-        sh "${TERRAFORM_HOME}/terraform plan -input=false -var 'region=${{params.region}}' -out tfplan"
+        sh "${TERRAFORM_HOME}/terraform plan -input=false -var 'region=${params.region}' -out tfplan"
         sh "${TERRAFORM_HOME}/terraform show -no-color tfplan > tfplan.txt"
             }
         }
@@ -59,7 +59,7 @@ buildDiscarder(logRotator(numToKeepStr:'5'))
             }
             steps {
                 // Execute the 'terraform apply' command here
-                sh "${TERRAFORM_HOME}/terraform apply -input=false -var 'region=${{params.region}}' -auto-approve"
+                sh "${TERRAFORM_HOME}/terraform apply -input=false -var 'region=${params.region}' -auto-approve"
             }
         }
     }
