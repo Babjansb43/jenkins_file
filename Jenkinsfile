@@ -17,9 +17,9 @@ pipeline{
 buildDiscarder(logRotator(numToKeepStr:'5'))
 }
     stages(){
-        stage('Terraform Plan') {
+        stage('Terraform Version Validation') {
             steps {
-                sh "${TERRAFORM_HOME}/terraform --version"  // Verify Terraform installation
+                sh 'terraform --version'  // Verify Terraform installation
             }
         }
         stage("Checkot"){
@@ -29,13 +29,13 @@ buildDiscarder(logRotator(numToKeepStr:'5'))
         }
         stage("Terraform init"){
             steps{
-        sh "${TERRAFORM_HOME}/terraform init -input=false"
+        sh 'terraform init -input=false'
             }
         }
          stage("Terraform plan"){
             steps{
-        sh "${TERRAFORM_HOME}/terraform plan -input=false -var 'region=${params.region}' -out tfplan"
-        sh "${TERRAFORM_HOME}/terraform show -no-color tfplan > tfplan.txt"
+        sh "terraform plan -input=false -var 'region=${params.region}' -out tfplan"
+        sh 'terraform show -no-color tfplan > tfplan.txt'
             }
         }
         stage('Approval') {
@@ -60,7 +60,7 @@ buildDiscarder(logRotator(numToKeepStr:'5'))
             }
             steps {
                 // Execute the 'terraform apply' command here
-                sh "${TERRAFORM_HOME}/terraform apply -input=false -var 'region=${params.region}' -auto-approve"
+                sh "terraform apply -input=false -var 'region=${params.region}' -auto-approve"
             }
         }
     }
