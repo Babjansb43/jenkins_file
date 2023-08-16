@@ -5,6 +5,10 @@ properties([parameters([choice(choices: ['us-east-1', 'us-east-2', 'us-west-1'],
 pipeline{
     agent any
 
+      tools {
+        terraform 'Terraform'
+      }
+
       environment {
         TERRAFORM_HOME = tool name: 'Terraform', type: 'HashiCorp Terraform'
     }
