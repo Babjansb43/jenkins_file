@@ -1,5 +1,5 @@
 
-properties([parameters([choice(choices: ['us-east-1', 'us-east-2', 'us-west-1'], description: 'Select in which region you want to deploy the resource ??', name: 'region')])])
+properties([parameters([choice(choices: ['eu-north-1', 'us-east-2', 'us-west-1'], description: 'Select in which region you want to deploy the resource ??', name: 'region')])])
 
 
 pipeline{
