@@ -3,9 +3,7 @@ properties([parameters([choice(choices: ['us-east-1', 'us-east-2', 'us-west-1'],
 
 
 pipeline{
-     agent {
-        label 'slave1'
-    }
+    agent any
       parameters {
         booleanParam(name: 'autoApprove', defaultValue: false, description: 'Automatically run apply after generating plan?')
       }
