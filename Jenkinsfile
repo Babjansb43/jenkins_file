@@ -3,7 +3,9 @@ properties([parameters([choice(choices: ['us-east-1', 'us-east-2', 'us-west-1'],
 
 
 pipeline{
-    agent any
+     agent {
+        label 'slave1'
+    }
       parameters {
         booleanParam(name: 'autoApprove', defaultValue: false, description: 'Automatically run apply after generating plan?')
       }
@@ -27,11 +29,6 @@ buildDiscarder(logRotator(numToKeepStr:'8'))
                 sh '/var/lib/jenkins/terraform --version'  // Verify Terraform installation
             }
         }
-        // stage("Checkot"){
-        //     steps{
-        // checkout scmGit(branches: [[name: '*/main']], extensions: [], userRemoteConfigs: [[url: 'https://github.com/Babjansb43/jenkins_file.git']])
-        //     }
-        // }
         stage("Terraform init"){
             steps{
                 sh '/var/lib/jenkins/terraform init'
